@@ -110,7 +110,11 @@ def check_in_guest():
         csv_guest = pandas.DataFrame(data_check_in)
         csv_guest.to_csv('Guest_List.csv', index=False)
         messagebox.showinfo(title='Check in', message='Check in successfully.')
-    
+        name_textbox.delete(0, END)
+        last_name_textbox.delete(0, END)
+        room_textbox.delete(0, END)
+        name_textbox.focus()
+
     check_in_button = Button(text='Check in', command=check_in)
     check_in_button.grid(column=3, row=4)
 
