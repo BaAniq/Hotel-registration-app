@@ -11,10 +11,18 @@ back_button = None
 try:
     csv_guest = pandas.read_csv('Guest_List.csv')
 except FileNotFoundError:
-    guest_dict = {}
+
+    room_list = []
+    last_name_list = []
+    name_list = []
 else:
-    guest_dict = csv_guest.to_dict()
-print(guest_dict)
+
+    room_list = csv_guest['Room'].to_list()
+    last_name_list = csv_guest['Last_name'].to_list()
+    name_list = csv_guest['Name'].to_list()
+
+
+
 # creating a  main window
 
 main_window = Tk()
@@ -48,9 +56,21 @@ def menu_list_box_used(event):
     back_button = Button(text=back, command=move_back, font=5)
     back_button.grid(row=4, column=2)
     if choice == "Show the Guest List":
-        pass
+        show_guest_list()
     elif choice == "Check in guest":
         check_in_guest()
+
+
+def show_guest_list():
+    global labels_to_delete
+    destroy_view()
+    show_guest_listbox = Listbox(height=4)
+    guest_elements = [[row.Room, row.Last_name, row.Name]for (index, row) in csv_guest.iterrows()]
+    for element in guest_elements:
+        show_guest_listbox.insert(guest_elements.index(element), element)
+
+    show_guest_listbox.grid(column=2, row=2)
+    labels_to_delete = [back_button, show_guest_listbox]
 
 
 def check_in_guest():
@@ -74,24 +94,26 @@ def check_in_guest():
     room_textbox = Entry(width=12)
     room_textbox.grid(column=3, row=3)
 
-
     def check_in():
+        global csv_guest, guest_dict
         name = name_textbox.get()
         last_name = last_name_textbox.get()
         room = room_textbox.get()
+        room_list.append(room)
+        last_name_list.append(last_name)
+        name_list.append(name)
         data_check_in = {
-            'Room': [room],
-            'Last_name': [last_name],
-            'Name': [name],
+            'Room': room_list,
+            'Last_name': last_name_list,
+            'Name': name_list,
         }
-        guest_dict.update(data_check_in)
-        csv_guest = pandas.DataFrame(guest_dict)
-        csv_guest.to_csv('Guest_List.csv')
+        csv_guest = pandas.DataFrame(data_check_in)
+        csv_guest.to_csv('Guest_List.csv', index=False)
 
     check_in_button = Button(text='Check in', command=check_in)
     check_in_button.grid(column=3, row=4)
 
-    labels_to_delete = [back_button, name_label, name_textbox, last_name_label, last_name_textbox, room_label,
+    labels_to_delete = [check_in_button, back_button, name_label, name_textbox, last_name_label, last_name_textbox, room_label,
                         room_textbox]
 
 
