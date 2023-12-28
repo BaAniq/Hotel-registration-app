@@ -1,5 +1,5 @@
 from tkinter import *
-
+from tkinter import messagebox
 import pandas
 
 beige = '#FAF6F0'
@@ -64,7 +64,7 @@ def menu_list_box_used(event):
 def show_guest_list():
     global labels_to_delete
     destroy_view()
-    show_guest_listbox = Listbox(height=4)
+    show_guest_listbox = Listbox(height=10)
     guest_elements = [[row.Room, row.Last_name, row.Name]for (index, row) in csv_guest.iterrows()]
     for element in guest_elements:
         show_guest_listbox.insert(guest_elements.index(element), element)
@@ -95,7 +95,7 @@ def check_in_guest():
     room_textbox.grid(column=3, row=3)
 
     def check_in():
-        global csv_guest, guest_dict
+        global csv_guest
         name = name_textbox.get()
         last_name = last_name_textbox.get()
         room = room_textbox.get()
@@ -109,7 +109,8 @@ def check_in_guest():
         }
         csv_guest = pandas.DataFrame(data_check_in)
         csv_guest.to_csv('Guest_List.csv', index=False)
-
+        messagebox.showinfo(title='Check in', message='Check in successfully.')
+    
     check_in_button = Button(text='Check in', command=check_in)
     check_in_button.grid(column=3, row=4)
 
