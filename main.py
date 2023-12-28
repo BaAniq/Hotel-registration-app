@@ -99,21 +99,24 @@ def check_in_guest():
         name = name_textbox.get()
         last_name = last_name_textbox.get()
         room = room_textbox.get()
-        room_list.append(room)
-        last_name_list.append(last_name)
-        name_list.append(name)
-        data_check_in = {
-            'Room': room_list,
-            'Last_name': last_name_list,
-            'Name': name_list,
-        }
-        csv_guest = pandas.DataFrame(data_check_in)
-        csv_guest.to_csv('Guest_List.csv', index=False)
-        messagebox.showinfo(title='Check in', message='Check in successfully.')
-        name_textbox.delete(0, END)
-        last_name_textbox.delete(0, END)
-        room_textbox.delete(0, END)
-        name_textbox.focus()
+        if len(name) == 0 or len(last_name) == 0 or len(room) == 0:
+            messagebox.showinfo(title='Empty fields', message='Please make sure there are no empty fields.')
+        else:
+            room_list.append(room)
+            last_name_list.append(last_name)
+            name_list.append(name)
+            data_check_in = {
+                'Room': room_list,
+                'Last_name': last_name_list,
+                'Name': name_list,
+            }
+            csv_guest = pandas.DataFrame(data_check_in)
+            csv_guest.to_csv('Guest_List.csv', index=False)
+            messagebox.showinfo(title='Check in', message='Check in successfully.')
+            name_textbox.delete(0, END)
+            last_name_textbox.delete(0, END)
+            room_textbox.delete(0, END)
+            name_textbox.focus()
 
     check_in_button = Button(text='Check in', command=check_in)
     check_in_button.grid(column=3, row=4)
