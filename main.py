@@ -7,6 +7,7 @@ back = "←"
 menu_listbox = None
 labels_to_delete = None
 back_button = None
+show_guest_listbox = None
 
 try:
     csv_guest = pandas.read_csv('Guest_List.csv')
@@ -62,15 +63,20 @@ def menu_list_box_used(event):
 
 
 def show_guest_list():
-    global labels_to_delete
+    global labels_to_delete, show_guest_listbox
     destroy_view()
+    selected_guest()
+    labels_to_delete = [back_button, show_guest_listbox]
+
+
+def selected_guest():
+    global show_guest_listbox
     show_guest_listbox = Listbox(height=10)
-    guest_elements = [[row.Room, row.Last_name, row.Name]for (index, row) in csv_guest.iterrows()]
+    guest_elements = [[row.Room, row.Last_name, row.Name] for (index, row) in csv_guest.iterrows()]
     for element in guest_elements:
         show_guest_listbox.insert(guest_elements.index(element), element)
 
     show_guest_listbox.grid(column=2, row=2)
-    labels_to_delete = [back_button, show_guest_listbox]
 
 
 def check_in_guest():
@@ -123,8 +129,6 @@ def check_in_guest():
 
     labels_to_delete = [check_in_button, back_button, name_label, name_textbox, last_name_label, last_name_textbox, room_label,
                         room_textbox]
-
-
 
 
 def destroy_view():
