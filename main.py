@@ -60,6 +60,10 @@ def menu_list_box_used(event):
         show_guest_list()
     elif choice == "Check in guest":
         check_in_guest()
+    elif choice == "Check out guest":
+        pass
+    elif choice == "Edit data":
+        pass
 
 
 def show_guest_list():
@@ -76,6 +80,10 @@ def selected_guest():
     for element in guest_elements:
         show_guest_listbox.insert(guest_elements.index(element), element)
 
+    def selected_guest_def(event):
+        selected_guest_data = show_guest_listbox.get(show_guest_listbox.curselection())
+        print(selected_guest_data)
+    show_guest_listbox.bind("<<ListboxSelect>>", selected_guest_def)
     show_guest_listbox.grid(column=2, row=2)
 
 
